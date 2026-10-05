@@ -463,13 +463,13 @@
       <uri>model://Apriltag36_11_00000</uri>
       <name>AprilTag0</name>
       <scale>0.25 0.25 0.25</scale>
-      <pose>3.9430100917816162 -0.77929997444152832 0.41729599237442017 1.57 0 -1.57</pose>
+      <pose>3.95 0 0.7 1.57 -3.14 -1.57</pose>
     </include>
 
     <include>
       <uri>model://bb</uri>
       <name>BB</name>
-      <pose>0 0 0.13 0 0 0</pose>
+      <pose>0 0 0.10 0 0 0</pose>
     </include>
 
   </world>
