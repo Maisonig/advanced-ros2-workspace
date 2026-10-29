@@ -465,6 +465,13 @@
       <scale>0.25 0.25 0.25</scale>
       <pose>3.95 0 0.7 1.57 -3.14 -1.57</pose>
     </include>
+    
+    <include>
+      <uri>model://Apriltag36_11_00001</uri>
+      <name>AprilTag1</name>
+      <scale>0.25 0.25 0.25</scale>
+      <pose>3.95 1.0 0.7 1.57 -3.14 -1.57</pose>
+    </include>
 
     <include>
       <uri>model://bb</uri>
