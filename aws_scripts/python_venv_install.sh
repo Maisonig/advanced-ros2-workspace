@@ -107,7 +107,7 @@ run_cmd "cd $workspace_path"
 cd "$workspace_path" || { print_error "Не удалось перейти в $workspace_path"; exit 1; }
 print_success "Текущая директория: $(pwd)"
 
-# Шаг 4: Создание виртуального окружения
+# Шаг 4: Создание виртуального окружения с --system-site-packages
 if [[ -d "venv" ]]; then
     print_warning "Виртуальное окружение 'venv' уже существует"
     echo -e "${YELLOW}Пересоздать окружение? (y/n)${NC}"
@@ -115,14 +115,14 @@ if [[ -d "venv" ]]; then
     if [[ $recreate == "y" || $recreate == "Y" ]]; then
         print_info "Удаление старого окружения..."
         run_cmd "rm -rf venv"
-        print_info "Создание нового виртуального окружения..."
-        run_cmd "python3 -m venv venv"
+        print_info "Создание нового виртуального окружения с доступом к системным пакетам..."
+        run_cmd "python3 -m venv --system-site-packages venv"
     else
         print_info "Используем существующее окружение"
     fi
 else
-    print_info "Создание виртуального окружения 'venv'..."
-    run_cmd "python3 -m venv venv"
+    print_info "Создание виртуального окружения 'venv' с доступом к системным пакетам..."
+    run_cmd "python3 -m venv --system-site-packages venv"
 fi
 
 # Шаг 5: Активация виртуального окружения
@@ -163,6 +163,15 @@ if [ $? -eq 0 ]; then
     print_success "ROS2 пакеты успешно импортируются"
 else
     print_warning "Не удалось импортировать rclpy, проверьте символические ссылки"
+fi
+
+# Дополнительная проверка catkin_pkg (частая причина падения colcon build)
+python3 -c "import catkin_pkg; print('catkin_pkg version:', catkin_pkg.__version__)" 2>/dev/null
+if [ $? -eq 0 ]; then
+    print_success "catkin_pkg доступен"
+else
+    print_warning "catkin_pkg не найден — colcon build может упасть на aws_bringup"
+    print_info "Попробуйте: sudo apt install python3-catkin-pkg"
 fi
 
 # Шаг 8: Добавление скрипта активации в .bashrc
